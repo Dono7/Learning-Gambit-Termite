@@ -1,0 +1,33 @@
+
+
+Instructions for a few exercices to learn Gambit Termite
+
+How to compile a .scm file into a javascript file ?
+Use following the command :
+	gsc -target js -warnings -link -flat filename.scm 
+(replace "filename.scm" with your the name of your scheme file)
+(2 javascript files are created. You need to import both of them in the HTML document)
+
+Exercice 0 :
+Create a first Scheme file (.scm) that include the minimal 'weblib' library. 
+Create an empty minimal HTML file, and use the scheme file to display "Hello World!" in a h1, in the HTML document.
+
+Exercice 1 : 
+Create an input button that add "Hello !" in the document everytime it is clicked.
+
+
+Exercice 2 :
+Create a first input (type: text) and a second input (type: submit). 
+A click on the submit button have to display the content of the input text in an Alert.
+
+
+Exercice 3 : 
+Create 4 input buttons, called "Green", "Red", "Blue", and "Yellow".
+Every click on one of them must create a square width the respective color.
+Do not build 4 procedures for the 4 buttons, but 1 procedures with several parameters.
+
+Exercice 5 : 
+Create Different functions to allows the user to append several string.
+A first version could be done using JavaScript concatenation.
+Then a second version with several conditionnal arguments in scheme using the first version.
+Finally, a recursive version using the first version.
