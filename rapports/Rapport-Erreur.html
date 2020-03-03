@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="fr-fr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Rapport d'erreur durant l'apprentissage de Gambit Termite</title>
+
+      <!-- Highlight JS , from online files-->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/monokai-sublime.min.css">
+    <script src="https://highlightjs.org/static/highlight.pack.js"></script>
+      <!-- Highlight JS , from local files-->
+    <link rel="stylesheet"
+        href="../highlight/styles/monokai-sublime.min.css">
+    <script src="../highlight/highlight.pack.js"></script>
+
+
+    <!-- Import Bootstrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style>
+        h1 {font-weight: 700 !important;text-align: center !important; margin-bottom:3rem;}
+        h2 {border-bottom:1px solid rgb(209, 209, 209); padding-left: 1rem; padding-bottom: 3px; margin: 2rem 0;}
+        h3 {margin-bottom: 1.5rem; margin-top: 2.5rem; font-weight: bold; padding-left:2rem;}
+        h4 {color: #6c757d !important; font-style: italic; margin-bottom: 1.5rem;}
+        p a {color: #268fff; font-weight: bold;}
+        p a:hover {color:#0062cc} 
+        code { color: #6c757d}
+        pre code { border-width: 0.1rem 0.1rem 0.1rem 0.5rem; border-style: solid;}
+        pre code.scheme { border-color: #C7663E ;}
+        pre code.bash { border-color: #3E87C7;}
+        pre { margin: 0.7rem 0;}
+        pre.exemple::before {content:"Exemple :"; color:#6c757d; font-style: italic;padding-left: 1rem;}
+    </style>
+
+  </head>
+
+  <body id="body" class="bg-dark text-white">
+      <div class="container py-5">
+
+          <!-- DEBUT DU RAPPORT-->
+        <h1>Rapport des erreurs rencontrées durant l'apprentissage de Gambit Termite</h1>
+
+        <h4>Version 1 - Mars 2020</h4>
+
+          <!-- INTRODUCTION -->
+        <h2>Introduction</h2>
+
+        <p>Ce rapport au format Web présente les différents bugs, messages d'erreurs, de compilations, ou autres problèmes rencontrés durant mon apprentissage personnel de Termite (Scheme vers JavaScript). Il servira à quiconque rencontrerait les mêmes problèmes ou souhaiterait apprendre Gambit Termite. Il servira notamment à <a href="https://github.com/feeley" target="_blank">Marc Feeley</a>, auteur de du compilateur <a href="https://github.com/gambit/gambit" target="_blank">Gambit</a>, et superviseur de mon projet Caracole, un projet web dont le coeur est codé en Scheme.</p>
+
+        <p>Ce fichier nécessite <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a> et <a href="https://highlightjs.org/" target="_blank">HighlighJS</a> pour être affiché correctement. La lecture hors-ligne de ce document peut donc entraîner des problèmes d'affichage.</p>
+
+        <p><a href="CodeFormattingForHighlighJS.html" target="_blank">Convertisseur de code</a> pour le highlight. (lien temporaire)</p>
+
+
+
+
+
+
+
+
+
+
+
+          <!-- ERR DE PROGRAAMMATION -->
+        <h2>Erreurs de programmation</h2>
+
+        <h3>Aucune fonction Scheme ne se lance</h3>
+        <p>Cause identifiée : La fonction main n'existe pas, n'est pas lancée, ou est vide</p>
+        <p>solution : </p>
+<pre><code class="scheme">; Write a main function
+(define (main)
+  ; call a function or do something here 
+  )
+
+; Launch the main function
+(main)
+</code></pre>
+
+
+
+
+
+        <h3>TypeError: g_check_procedure(...) is not a function</h3>
+        <p>Cause identifiée : Tentative de générer du JavaScript sans utiliser <code>(##inline-host-statement)</code>.</p>
+<pre class="exemple"><code>; Va générer une erreur
+(define (alert msg)
+  ("alert(g_scm2host(@1@));" msg))
+
+; Ne vas pas générer d'erreur
+(define (alert msg)
+  (##inline-host-statement "alert(g_scm2host(@1@));" msg))
+</code></pre>
+
+
+
+
+
+        <h3>SyntaxError: unexpected token: identifier</h3>
+        <p>Cause identifiée : "Transfer" de data de Javascript vers Scheme mais en utilisant <code>(##inline-host-statement)</code> au lieu de <code>(##inline-host-expression)</code></p>
+
+
+
+
+
+
+
+
+
+
+          <!-- ERR DE COMPILATION -->
+        <h2>Erreurs lors de la compilation</h2>
+
+        <h3>Incomplete form, EOF reached</h3>
+<pre><code class="bash">*** ERROR IN "exo02.scm"@22.1 -- Incomplete form, EOF reached</code></pre>
+        <p>Cause identifiée : Une parenthèse a été oubliée.</p>
+        <p>Solution : Chercher où est l'oubli dans le fichier et rajouter la parenthèse manquante.</p>
+
+
+
+
+
+
+
+
+
+
+  <script>
+    hljs.configure({tabReplace: '  '});
+    hljs.initHighlightingOnLoad();
+  </script>
+  </body>
+
+</html>
