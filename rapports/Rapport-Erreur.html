@@ -62,9 +62,8 @@
 
 
 
-
-          <!-- ERR DE PROGRAAMMATION -->
-        <h2>Erreurs de programmation</h2>
+        <!-- ERR CLASSIQUES -->
+        <h2>Erreurs classique</h2>
 
         <h3>Aucune fonction Scheme ne se lance</h3>
         <p>Cause identifiée : La fonction main n'existe pas, n'est pas lancée, ou est vide</p>
@@ -79,11 +78,37 @@
 </code></pre>
 
 
+          <h3>Des erreurs de syntaxes, undefined, ou autres, apparaissent en console</h3>
+          <p>Cause identifiée : L'importation des fichiers JavaScript est faite trop tôt dans la page (souvent, dans le head) Les fonctions Javascript essaient parfois de se lancer avant le chargement complet de la page.</p>
+          <p>Solution : Importer les fichier en fin de body :</p>
+<pre><code class="html">&lt;html&gt;
+  &lt;head&gt;
+    &lt;!-- ... --&gt;
+  &lt;head&gt;
+  &lt;body&gt;
+    &lt;!-- The page code here... --&gt;
+    &lt;script src="yourJSfile.js" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 
+
+
+
+
+
+
+
+
+
+
+
+          <!-- ERR DE PROGRAAMMATION -->
+        <h2>Erreurs de programmation</h2>
 
 
         <h3>TypeError: g_check_procedure(...) is not a function</h3>
-        <p>Cause identifiée : Tentative de générer du JavaScript sans utiliser <code>(##inline-host-statement)</code>.</p>
+        <p>Cause identifiée : Tentative de générer du JavaScript, ou la fonction <code>g_scm2host()</code> , sans utiliser <code>(##inline-host-statement)</code>.</p>
 <pre class="exemple"><code>; Va générer une erreur
 (define (alert msg)
   ("alert(g_scm2host(@1@));" msg))
@@ -98,7 +123,19 @@
 
 
         <h3>SyntaxError: unexpected token: identifier</h3>
-        <p>Cause identifiée : "Transfer" de data de Javascript vers Scheme mais en utilisant <code>(##inline-host-statement)</code> au lieu de <code>(##inline-host-expression)</code></p>
+        <p>Cause 1 : "Transfer" de data de Javascript vers Scheme mais en utilisant <code>(##inline-host-expression)</code> au lieu de <code>(##inline-host-statement)</code></p>
+        <p>Cause 2 : Oubli d'un <code> ; </code> à la fin de la commande.</p>
+        <p>Cause 3 : On tente d'écrire du code JS en passant un argument, en oubliant que cet argument sera considérée comme une const string par JS, et non comme du text.</p>
+
+
+
+        <h3>TypeError: pc is not a function</h3>
+        <p>Cause encore indéfinie. L'erreur se produit dans ce bloc :</p>
+<pre><code class="javascript">function g_trampoline(pc) {
+  while (pc !== null) {
+    pc = pc();
+  }
+}</code></pre>
 
 
 
