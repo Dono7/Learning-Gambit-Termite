@@ -22,11 +22,11 @@ A click on the submit button have to display the content of the input text in an
 
 
 Exercice 3 : 
-Create 4 input buttons, called "Green", "Red", "Blue", and "Yellow".
+Create at least 4 input buttons, called "Green", "Red", "Blue", and "Yellow".
 Every click on one of them must create a square width the respective color.
 Do not build 4 procedures for the 4 buttons, but 1 procedures with several parameters.
 
-Exercice 5 : 
+Exercice 4 : 
 Create Different functions to allows the user to append several string.
 A first version could be done using JavaScript concatenation.
 Then a second version with several conditionnal arguments in scheme using the first version.

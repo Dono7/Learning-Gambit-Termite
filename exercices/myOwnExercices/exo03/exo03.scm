@@ -51,6 +51,8 @@
   (btn-color "yellow")
   (btn-color "#28F15C")
   (btn-color "rgb(230,112,45)")
+
+  (body-append-br "<p>This works with every type of color code.</p>")
   ; Creation de la div qui changera de couleur
   (colored-div)
 
