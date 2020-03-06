@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="fr-fr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Remarques et Suggestions sur Gambit Termite</title>
+
+      <!-- Highlight JS , from online files-->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/monokai-sublime.min.css">
+    <script src="https://highlightjs.org/static/highlight.pack.js"></script>
+      <!-- Highlight JS , from local files-->
+    <link rel="stylesheet"
+        href="../highlight/styles/monokai-sublime.min.css">
+    <script src="../highlight/highlight.pack.js"></script>
+
+
+    <!-- Import Bootstrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style>
+        h1 {font-weight: 700 !important;text-align: center !important; margin-bottom:3rem;}
+        h2 {border-bottom:1px solid rgb(209, 209, 209); padding-left: 1rem; padding-bottom: 3px; margin: 2rem 0;}
+        h3 {margin-bottom: 1.5rem;margin-top:2.5rem;font-weight:bold;padding-left:2rem;color:
+#dc3545;}
+        h4 {color: #6c757d !important; font-style: italic; margin-bottom: 1.5rem;}
+        p a {color: #268fff; font-weight: bold;}
+        p a:hover {color:#0062cc} 
+        code { color: #6c757d}
+        pre code { border-width: 0.1rem 0.1rem 0.1rem 0.5rem; border-style: solid;}
+        pre code.scheme { border-color: #C7663E ;}
+        pre code.bash { border-color: #3E87C7;}
+        pre { margin: 0.7rem 0;}
+        pre.exemple::before {content:"Exemple :"; color:#6c757d; font-style: italic;padding-left: 1rem;}
+        .red {color:#dc3545}
+        .grey {color:#6c757d}
+    </style>
+
+  </head>
+
+  <body id="body" class="bg-dark text-white">
+      <div class="container py-5">
+
+          <!-- DEBUT DU RAPPORT-->
+        <h1>Remarques et Suggestion sur Gambit Termite</h1>
+
+        <h4>Version 1 - Mars 2020</h4>
+
+          <!-- INTRODUCTION -->
+        <h2>Introduction</h2>
+
+        <p>Ce rapport au format Web présente les différentes remarques que je me fais, et que j'aimerai partager, durant mon apprentissage personnel de Termite (Scheme vers JavaScript). Ce rapport s'adresse notamment à <a href="https://github.com/feeley" target="_blank">Marc Feeley</a>, auteur de du compilateur <a href="https://github.com/gambit/gambit" target="_blank">Gambit</a>, et superviseur de mon projet web, afin d'améliorer et débugger le compilateur Gambit ainsi que son extension Termite.</p>
+
+        <p>Ce fichier nécessite <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a> et <a href="https://highlightjs.org/" target="_blank">HighlighJS</a> pour être affiché correctement. La lecture hors-ligne de ce document peut donc entraîner des problèmes d'affichage.</p>
+
+
+
+
+
+
+
+
+
+
+
+        <!-- ERR CLASSIQUES -->
+        <h2>Console log</h2>
+
+        <h3>Affichages inexistant</h3>
+
+        <p>La console, et notamment sa fonction <code>console.log()</code> représentent un outils de base pour faire du développement JavaScript, notamment pour le debugging. Or, l'affichage en console via Gambit Termite ne produit pas toujours de résultats. Les fonctions utilisées pour l'affichage en console sont :</p>
+
+<pre><code class="scheme">(define (log msg)
+  (##inline-host-statement "console.log(g_scm2host(@1@));" msg))
+
+(define (DOM-log element)
+  (##inline-host-statement "console.log(@1@);" element))
+
+(define (log-toStr variable)
+  (##inline-host-expression "console.log(g_scm2host(@1@))" variable))
+</code></pre>
+
+        <p>Ces fonctions ne produisent parfois tout simplement rien en console, comme si aucun appel n'avait été effectué. Je repertorie dans un tableau ci-dessous l'affiche (ou non) en console à partir du type de la variable (en Scheme).</p>
+
+        <table class="table table-dark">
+            <thead>
+              <tr>
+                <th scope="col">Var type (scheme)</th>
+                <th scope="col">Value exemple</th>
+                <th scope="col">log</th>
+                <th scope="col">DOM-log</th>
+                <th scope="col">log-toStr</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                  <th>Char</th>
+                  <th>#\c</th>
+                  <td class="red">Exc 1 *</td>
+                  <td>Object { code: 99 }</td>
+                  <td class="red">Exc 1 *</td>
+              </tr>
+              <tr>
+                <th>String</th>
+                <th>"Hello"</th>
+                <td>Hello</td>
+                <td>Object { codes: (5) […] }</td>
+                <td>Hello</td>
+              </tr>
+              <tr>
+                <th>Integer</th>
+                <td>23</td>
+                <td class="grey">Rien</td>
+                <td>23</td>
+                <td>23</td>
+              </tr>
+              <tr>
+                <th>Float</th>
+                <td>3.14</td>
+                <td class="grey">Rien</td>
+                <td>Object { val: 3.14 }</td>
+                <td>3.14</td>
+              </tr>
+              <tr>
+                <th>Complexe</th>
+                <td>2+3i</td>
+                <td class="grey">Rien</td>
+                <td>Object { real: 2, imag: 3 }</td>
+                <td class="red">Exc 1 *</td>
+              </tr>
+              <tr>
+                <th>Rational</th>
+                <td>-22/7</td>
+                <td class="grey">Rien</td>
+                <td>Object { num: -22, den: 7 }</td>
+                <td class="red">Exc 1 *</td>
+              </tr>
+              <tr>
+                <th>Boolean</th>
+                <td>#f</td>
+                <td>false</td>
+                <td>false</td>
+                <td>false</td>
+              </tr>
+              <tr>
+                <th>JS DOM</th>
+                <td>&lt;body&gt;...&lt;/body&gt;</td>
+                <td class="red">Exc 1 *</td>
+                <td>&lt;body id="body"&gt;</td>
+                <td class="red">Exc 1 *</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>* : It stopped JavaScript</p>
+          <p>Rien : Le console.log n'a même pas produit de sortie</p>
+          <p>Exception 1 : <span class="red"> uncaught exception: scm2host error</span></p>
+          <p><u>Remarque :</u> Après plusieurs nouveaux essais, il s'avère que l'entier s'affiche correctement avec la fonction 'log' d'origine, et pas les autres. Ce qui rentre en contradiction avec le tableau. La ligne Integer n'est donc pas fiable.</p>
+          <p><u>Piste de résolution :</u> On pourrait utiliser une fonction log qui vérifie le type de notre variable, et utilise différent log pour afficher correctement la variable en fonction. Pour le charactère qui n'a pas pu être affiché dans aucun des cas, on peut partir du résultat de la fonction DOM-log qui créé un objet avec un attribut portant la valeur ASCII du char, et ainsi utiliser ce code pour générer un char en JavaScript. La fonction <code>String.fromCharCode()</code> permet d'avoir une string composée d'un seule char correspondant à un code ascii.</p>
+
+<pre><code class="scheme">; List of type dependent log (some types use the same form)
+(define (log-str v)
+  (##inline-host-statement "console.log(g_scm2host(@1@));" v))
+
+(define (log-int i)
+  (##inline-host-statement "console.log(g_scm2host(@1@));" i))
+
+(define (log-bool b)
+  (##inline-host-statement "console.log(@1@);" b))
+
+(define (log-char c)
+  (##inline-host-statement "console.log( String.fromCharCode(@1@.code) );" c))
+
+(define (log-real f)
+  (##inline-host-statement "console.log(g_scm2host(@1@).toString());" f))
+
+(define (log-rat r)
+  (##inline-host-statement "console.log( @1@.num+\"/\"+@1@.den );" r))
+
+(define (log-comp c)
+  (if (positive? (imag-part c)) ; The + sign need to be displayed, the - sign is included
+    (##inline-host-statement "console.log( @1@.real+\"+\"+@1@.imag+\"i\" );" c)
+    (##inline-host-statement "console.log( @1@.real.toString()+@1@.imag.toString()+\"i\" );" c)))
+
+(define (log-obj o)
+  (##inline-host-statement "console.log(@1@);" o))
+</code></pre>
+
+
+
+          <!-- CREDITS -->
+          <h2>Crédits</h2>
+
+          <p>Autheur de ce rapport : Donovan Trinh (actuellement étudiant en Informatique à l'Université de Montréal, sous la supervision de Marc Feeley).</p>
+
+          <p><a href="CodeFormattingForHighlighJS.html" target="_blank">Convertisseur</a>  de code pour débugger HighlightJS</p>
+
+
+
+
+
+
+
+  <script>
+    hljs.configure({tabReplace: '  '});
+    hljs.initHighlightingOnLoad();
+  </script>
+  </body>
+
+</html>
