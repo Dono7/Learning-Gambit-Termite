@@ -139,6 +139,17 @@
 
 
 
+        <h3>too much recursion</h3>
+        <p>Cause vague, pas encore de solution.</p>
+
+
+
+
+        <h3>On demande un log mais rien ne se passe</h3>
+        <p>Cause 1 : Un entier ne sera pas affiché par la fonction <code>log</code>. Il faudra utiliser la fonction <code>log-int</code></p>
+        <p>Cause 2 : Si on tente d'afficher un objet DOM, il faut utiliser la procédure <code>DOM-log</code> et non pas <code>log</code>.</p>
+
+
 
 
 
@@ -155,6 +166,10 @@
         <p>Solution : Chercher où est l'oubli dans le fichier et rajouter la parenthèse manquante.</p>
 
 
+
+
+        <h3>More than one 'define' of global variable</h3>
+        <p>On a tenté de définir 2 fois la même variable globale. Cela peut venir du fait que l'on include 2 fois une librairie, ou que l'on inclue un premier fichier qui lui aussi inclue le deuxième.</p>
 
 
 
