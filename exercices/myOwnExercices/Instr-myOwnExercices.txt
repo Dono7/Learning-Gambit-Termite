@@ -31,3 +31,6 @@ Create Different functions to allows the user to append several string.
 A first version could be done using JavaScript concatenation.
 Then a second version with several conditionnal arguments in scheme using the first version.
 Finally, a recursive version using the first version.
+
+Exercice 5 : 
+Create and use useful procedures/functions in libraries.
