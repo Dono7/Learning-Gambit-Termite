@@ -51,6 +51,7 @@
   ;(log-toStr v8)
   ;(log-char #\c)
 
+  #|
   (log-str "hello")
   (log-int 245)
   (log-char #\h)
@@ -63,7 +64,17 @@
   (log-bool (positive? 5))
   (log-bool (positive? -5))
   (log-bool (positive? 0))
-  
+  |#
+
+  ;(##inline-host-statement "console.log(@1@.nodeName == undefined);" 3)  
+
+  ;#|
+  (map 
+    (lambda (e)
+      (log-bool
+        (num? e)))
+    '(#\c "hello" 23 3.14 2+3i -22/7 #f (DOM-body) ) )
+  ;|#
 
 
   (log "end")

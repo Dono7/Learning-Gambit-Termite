@@ -26,18 +26,7 @@
     (##inline-host-statement "@1@.appendChild(@2@);" parent newchild))
 
 
-
-; Call the JavaScript Console.log function
-#| Old Log functions
-(define (log msg)
-    (##inline-host-statement "console.log(g_scm2host(@1@));" msg))
-
-(define (log-toStr i)
-  (##inline-host-statement "console.log(g_scm2host(@1@).toString());" i))
-
-(define (log-char c)
-  (##inline-host-statement "console.log(String.fromCharCode(@1@.code));" c))
-;|#
+; List of type dependent log functions (some types use the same form)
 
 (define (log-str v)
   (##inline-host-statement "console.log(g_scm2host(@1@));" v))
@@ -52,7 +41,7 @@
   (##inline-host-statement "console.log( String.fromCharCode(@1@.code) );" c))
 
 (define (log-real f)
-  (##inline-host-statement "console.log(g_scm2host(@1@).toString());" f))
+  (##inline-host-statement "console.log(g_scm2host(@1@));" f))
 
 (define (log-rat r)
   (##inline-host-statement "console.log( @1@.num+\"/\"+@1@.den );" r))
