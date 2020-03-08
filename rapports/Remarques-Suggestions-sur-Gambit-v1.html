@@ -64,12 +64,12 @@
 
 
 
-        <!-- ERR CLASSIQUES -->
-        <h2>Console log</h2>
+<!-- ERR CLASSIQUES -->
+<h2>Console log</h2>
 
-        <h3>Affichages inexistant</h3>
+<h3>Affichages inexistant</h3>
 
-        <p>La console, et notamment sa fonction <code>console.log()</code> représentent un outils de base pour faire du développement JavaScript, notamment pour le debugging. Or, l'affichage en console via Gambit Termite ne produit pas toujours de résultats. Les fonctions utilisées pour l'affichage en console sont :</p>
+<p>La console, et notamment sa fonction <code>console.log()</code> représentent un outils de base pour faire du développement JavaScript, notamment pour le debugging. Or, l'affichage en console via Gambit Termite ne produit pas toujours de résultats. Les fonctions utilisées pour l'affichage en console sont :</p>
 
 <pre><code class="scheme">(define (log msg)
   (##inline-host-statement "console.log(g_scm2host(@1@));" msg))
@@ -78,86 +78,87 @@
   (##inline-host-statement "console.log(@1@);" element))
 
 (define (log-toStr variable)
-  (##inline-host-expression "console.log(g_scm2host(@1@))" variable))
+  (##inline-host-statement "console.log(g_scm2host(@1@).toString());" variable))
 </code></pre>
 
-        <p>Ces fonctions ne produisent parfois tout simplement rien en console, comme si aucun appel n'avait été effectué. Je repertorie dans un tableau ci-dessous l'affiche (ou non) en console à partir du type de la variable (en Scheme).</p>
+<p>Ces fonctions ne produisent parfois tout simplement rien en console, comme si aucun appel n'avait été effectué. Je repertorie dans un tableau ci-dessous l'affiche (ou non) en console à partir du type de la variable (en Scheme).</p>
 
-        <table class="table table-dark">
-            <thead>
-              <tr>
-                <th scope="col">Var type (scheme)</th>
-                <th scope="col">Value exemple</th>
-                <th scope="col">log</th>
-                <th scope="col">DOM-log</th>
-                <th scope="col">log-toStr</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                  <th>Char</th>
-                  <th>#\c</th>
-                  <td class="red">Exc 1 *</td>
-                  <td>Object { code: 99 }</td>
-                  <td class="red">Exc 1 *</td>
-              </tr>
-              <tr>
-                <th>String</th>
-                <th>"Hello"</th>
-                <td>Hello</td>
-                <td>Object { codes: (5) […] }</td>
-                <td>Hello</td>
-              </tr>
-              <tr>
-                <th>Integer</th>
-                <td>23</td>
-                <td class="grey">Rien</td>
-                <td>23</td>
-                <td>23</td>
-              </tr>
-              <tr>
-                <th>Float</th>
-                <td>3.14</td>
-                <td class="grey">Rien</td>
-                <td>Object { val: 3.14 }</td>
-                <td>3.14</td>
-              </tr>
-              <tr>
-                <th>Complexe</th>
-                <td>2+3i</td>
-                <td class="grey">Rien</td>
-                <td>Object { real: 2, imag: 3 }</td>
-                <td class="red">Exc 1 *</td>
-              </tr>
-              <tr>
-                <th>Rational</th>
-                <td>-22/7</td>
-                <td class="grey">Rien</td>
-                <td>Object { num: -22, den: 7 }</td>
-                <td class="red">Exc 1 *</td>
-              </tr>
-              <tr>
-                <th>Boolean</th>
-                <td>#f</td>
-                <td>false</td>
-                <td>false</td>
-                <td>false</td>
-              </tr>
-              <tr>
-                <th>JS DOM</th>
-                <td>&lt;body&gt;...&lt;/body&gt;</td>
-                <td class="red">Exc 1 *</td>
-                <td>&lt;body id="body"&gt;</td>
-                <td class="red">Exc 1 *</td>
-              </tr>
-            </tbody>
-          </table>
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Var type (scheme)</th>
+      <th scope="col">Value exemple</th>
+      <th scope="col">log</th>
+      <th scope="col">DOM-log</th>
+      <th scope="col">log-toStr</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <th>Char</th>
+        <th>#\c</th>
+        <td class="red">Exc 1 *</td>
+        <td>Object { code: 99 }</td>
+        <td class="red">Exc 1 *</td>
+    </tr>
+    <tr>
+      <th>String</th>
+      <th>"Hello"</th>
+      <td>Hello</td>
+      <td>Object { codes: (5) […] }</td>
+      <td>Hello</td>
+    </tr>
+    <tr>
+      <th>Integer</th>
+      <td>23</td>
+      <td class="grey">Rien</td>
+      <td>23</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>Float</th>
+      <td>3.14</td>
+      <td class="grey">Rien</td>
+      <td>Object { val: 3.14 }</td>
+      <td>3.14</td>
+    </tr>
+    <tr>
+      <th>Complexe</th>
+      <td>2+3i</td>
+      <td class="grey">Rien</td>
+      <td>Object { real: 2, imag: 3 }</td>
+      <td class="red">Exc 1 *</td>
+    </tr>
+    <tr>
+      <th>Rational</th>
+      <td>-22/7</td>
+      <td class="grey">Rien</td>
+      <td>Object { num: -22, den: 7 }</td>
+      <td class="red">Exc 1 *</td>
+    </tr>
+    <tr>
+      <th>Boolean</th>
+      <td>#f</td>
+      <td>false</td>
+      <td>false</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <th>JS DOM</th>
+      <td>&lt;body&gt;...&lt;/body&gt;</td>
+      <td class="red">Exc 1 *</td>
+      <td>&lt;body id="body"&gt;</td>
+      <td class="red">Exc 1 *</td>
+    </tr>
+  </tbody>
+</table>
 
-          <p>* : It stopped JavaScript</p>
-          <p>Rien : Le console.log n'a même pas produit de sortie</p>
-          <p>Exception 1 : <span class="red"> uncaught exception: scm2host error</span></p>
-          <p><u>Remarque :</u> Après plusieurs nouveaux essais, il s'avère que l'entier s'affiche correctement avec la fonction 'log' d'origine, et pas les autres. Ce qui rentre en contradiction avec le tableau. La ligne Integer n'est donc pas fiable.</p>
-          <p><u>Piste de résolution :</u> On pourrait utiliser une fonction log qui vérifie le type de notre variable, et utilise différent log pour afficher correctement la variable en fonction. Pour le charactère qui n'a pas pu être affiché dans aucun des cas, on peut partir du résultat de la fonction DOM-log qui créé un objet avec un attribut portant la valeur ASCII du char, et ainsi utiliser ce code pour générer un char en JavaScript. La fonction <code>String.fromCharCode()</code> permet d'avoir une string composée d'un seule char correspondant à un code ascii.</p>
+<p>* : It stopped JavaScript</p>
+<p>Rien : Le console.log n'a même pas produit de sortie</p>
+<p>Exception 1 : <span class="red"> uncaught exception: scm2host error</span></p>
+<p><u>Remarque :</u> Les entiers arrivent parfois à s'afficher, et parfois ne provoquent aucune sortie en console. Les conditions pour qu'ils s'affichent ne sont pas encore connus, mais il semblerait qu'ils puissent parfois s'afficher, parfois non, selon le contexte. <a href="#ConsoleCasSpecial">Voir "Cas spécial"</a> plus bas.</p>
+<p><u>Piste de résolution :</u> On pourrait utiliser une fonction log qui vérifie le type de notre variable, et utilise différent log pour afficher correctement la variable en fonction. Pour le charactère qui n'a pas pu être affiché dans aucun des cas, on peut partir du résultat de la fonction DOM-log qui créé un objet avec un attribut portant la valeur ASCII du char, et ainsi utiliser ce code pour générer un char en JavaScript. La fonction <code>String.fromCharCode()</code> permet d'avoir une string composée d'un seule char correspondant à un code ascii.<br>
+Afin d'utiliser ces fonctions, on sous-entend que les fonctions pour déterminer le type d'une vaariable ont déjà été réalisées.</p>
 
 <pre><code class="scheme">; List of type dependent log (some types use the same form)
 (define (log-str v)
@@ -173,19 +174,54 @@
   (##inline-host-statement "console.log( String.fromCharCode(@1@.code) );" c))
 
 (define (log-real f)
-  (##inline-host-statement "console.log(g_scm2host(@1@).toString());" f))
+  (##inline-host-statement "console.log(g_scm2host(@1@));" f))
 
 (define (log-rat r)
   (##inline-host-statement "console.log( @1@.num+\"/\"+@1@.den );" r))
 
 (define (log-comp c)
-  (if (positive? (imag-part c)) ; The + sign need to be displayed, the - sign is included
+  (if (positive? (imag-part c)) ; The + sign need to be displayed, the - sign is include
     (##inline-host-statement "console.log( @1@.real+\"+\"+@1@.imag+\"i\" );" c)
     (##inline-host-statement "console.log( @1@.real.toString()+@1@.imag.toString()+\"i\" );" c)))
 
 (define (log-obj o)
   (##inline-host-statement "console.log(@1@);" o))
+
+(define (log var)
+  (if (str? var)
+    (log-str var)
+    (if (int? var)
+      (log-int var)
+      (if (float? var)
+        (log-real var)
+        (if (rat? var)
+          (log-rat var)
+          (if (char? var)
+            (log-char var)
+            (if (comp? var)
+              (log-comp var)
+              (log-obj var))))))))
 </code></pre>
+
+<h3 id="ConsoleCasSpecial">Cas spécial des listes</h3>
+
+<p>J'ai pu constaté que les objets (un objet DOM plus particulièrement) n'est pas transmit de la même façon si celui-ci provient d'une liste ou pas. La fonction (DOM-body) récupère le DOM body de la page HTML.</p>
+<pre><code class="scheme">(log "Regarder la différence entre les affichages suivants :")
+(define body (DOM-body))
+(define body-list '( (DOM-body) (DOM-body) ) )
+(log body)
+(log (car body-list))
+(log (cdr body-list))
+</code></pre>
+
+<p>La sortie en console est :</p>
+<pre><code class="js">
+> "Regarder la diffÃ©rence entre les affichages suivants :"
+> &lt;body id="body"&gt;
+> Object { car: {…}, cdr: null }
+> Object { car: {…}, cdr: null }
+</code></pre>
+<p>On constate que lorsque l'objet DOM est directement passé à log, celui-ci s'affiche bien en tant qu'un objet de DOM html. En revanche</p>
 
 
 
