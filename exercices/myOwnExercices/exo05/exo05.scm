@@ -15,8 +15,8 @@
 
   (body-append "<div id='red-square' style='background:red;height:300px;width:300px'></div>")
 
-  ;(define mysquare (DOM-getById "red-square"))
-  ;(DOM-log mysquare)
+  (define mysquare (DOM-getById "red-square"))
+  (DOM-log mysquare)
   ;(DOM-rmv mysquare)
 
 
@@ -47,9 +47,11 @@
   (define v8 (DOM-body))
   (define v9 2+3i)
 
-  ;(DOM-log v7)
-  ;(log-toStr v8)
-  ;(log-char #\c)
+  (define myvar v2)
+
+  ;(log myvar)
+  ;(DOM-log myvar)
+  ;(log-toStr myvar)
 
   #|
   (log-str "hello")
@@ -68,14 +70,31 @@
 
   ;(##inline-host-statement "console.log(@1@.nodeName == undefined);" 3)  
 
-  ;#|
+  (log "Regarder la différence entre les affichages suivants :")
+  (define body (DOM-body))
+  (define body-list '( (DOM-body) (DOM-body) ) )
+  (log body)
+  (log (car body-list))
+  (log (cdr body-list))
+  
+
+  #|
   (map 
     (lambda (e)
-      (log-bool
-        (num? e)))
+      (log e))
+    '(#\c "hello" 23 3.14 2+3i -22/7 #f (DOM-body) ) )
+  ;|#
+  
+  #|
+  (map 
+    (lambda (e)
+      (if (object? e)
+        (##inline-host-statement "console.log(@1@);" e)))
     '(#\c "hello" 23 3.14 2+3i -22/7 #f (DOM-body) ) )
   ;|#
 
+  ; Why does this procedure do not show the same as before ?
+  ;(##inline-host-statement "console.log(@1@);" (DOM-body))
 
   (log "end")
 ;)
