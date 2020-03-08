@@ -44,6 +44,21 @@
     (rat? var) ))
 
 
+(define (imag-part comp) 
+  (if (comp? comp)
+    (##inline-host-statement "console.log(@1@.imag);" comp)
+    (error "Tried to read the imag-part of something that is not a complex number.")))
+
+(define (real-part comp) 
+  (if (comp? comp)
+    (##inline-host-statement "console.log(@1@.real);" comp)
+    (error "Tried to read the real-part of something that is not a complex number.")))
+
+
+
+
+
+
 ; Easier proc name. Not tested yet
 (define (s2h data)
   ("g_scm2host(@1@)" data))

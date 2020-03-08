@@ -57,17 +57,17 @@
 
 
 (define (log var)
-  (if (##string? var)
+  (if (str? var)
     (log-str var)
-    (if (##integer? var)
+    (if (int? var)
       (log-int var)
-      (if (##real? var)
+      (if (float? var)
         (log-real var)
-        (if (##rational? var)
+        (if (rat? var)
           (log-rat var)
-          (if (##char? var)
+          (if (char? var)
             (log-char var)
-            (if (##complex? var)
+            (if (comp? var)
               (log-comp var)
               (log-obj var))))))))
 
