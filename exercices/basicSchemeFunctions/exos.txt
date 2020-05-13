@@ -1,0 +1,82 @@
+Le but de ces exercices est de faire un apprentissage progressif de Scheme et sa syntaxe particulière.
+Les exercices auront pour but de modéliser un jeu de carte. Il faudra pouvoir :
+- créer un jeu de 52 cartes (ou 54, avec les jokers) (qu'on appelera un Deck)
+- pouvoir le mélanger
+- pouvoir distribuer des cartes aux joueurs (7 cartes par joueur, ou 6)
+- Permettre au joueur de piocher une carte (dans le deck d'origine, qu'on appelera pioche)
+- Permettre au joueur de "poser" une (ou plusieurs) carte qu'il a en main 
+  (dans un second deck, qu'on appelera pose)
+
+Les premiers exercices seront simple à réaliser, et deviendront plus complexe au fils du temps.
+
+Pour excecuter l'ensemble des fichiers, se placer dans ce repertoire et :
+> gsc
+> (load "allexos.scm")
+
+
+--- Exo1 :
+Ecrire une function qui renvoie une liste d'entiers allant de 1 à n, de façon que 
+> (make-list 8)
+Renvoie :
+(1 2 3 4 5 6 7 8)
+
+--- Exo2 : 
+Ecrire une fonction qui modifie l'élément à l'index i dans une liste l pour lui donner la valeur n
+> (define l (make-list 5))
+> (list-set!-0 l 2 15)
+> l
+(1 2 15 4 5)
+
+Ecrire la même fonction (list-set! ...), mais dont l'indice de départ est 1 et non plus 0.
+
+
+
+--- Exo3 :
+En utilisant les fonctions précédentes, ecrire une fonction qui échange 2 éléments d'une liste, 
+index débutant à 1
+> (define l (make-list 7))
+> (switch l 2 7)
+(1 7 3 4 5 6 2)
+
+
+--- Exo4 :
+En utilisant les fonction précédentes, ecrire une fonction qui mélange aléatoirement une liste.
+> (shuffle (make-list 5))
+(2 4 1 5 3)
+> (shuffle (make-list 5))
+(5 4 2 3 1)
+
+--- Exo5 :
+Afin de tester l'efficacité du mélange, écrire une fonction qui permet de mélanger n fois une liste,
+et de regarder combien de fois un index i est arrivé à chaque place.
+Par exemple :
+> (define l '(1 2 3))
+> (print-stats l 12 3)
+1,3
+2,2
+3,7
+
+Cela signifie :
+Le 3 est arrivé à la place 1 à 3 reprises sur les 12 totales
+Le 3 est arrivé à la place 2 à 2 reprises sur les 12 totales
+Le 3 est arrivé à la place 3 à 7 reprises sur les 12 totales
+Conclusion : Le mélange n'est pas très satisfaisant car le 3 a plus de chance de rester à sa position.
+
+Un bon mélange donnerait des indice,valeur où toutes les valeures sont plus ou moins exactes
+Un mélange aléatoire 'parfait' donnerait par exemple :
+1,4
+2,4
+3,4
+
+Pour cet exo, on pourra des fonctions annexes
+
+
+--- Exo6 :
+Modéliser 3 joueurs dans une variable globale "players".
+Chaque joueur est représenté par une liste de 4 éléments :
+- Sa main (une liste de cartes)
+- Son pseudo
+- Son score de manche et son score total sur partie
+
+Faire quelques fonctions sur les joueurs ou la liste des joueurs,
+notamment des "getter et setter"
