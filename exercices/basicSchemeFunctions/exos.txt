@@ -80,3 +80,9 @@ Chaque joueur est représenté par une liste de 4 éléments :
 
 Faire quelques fonctions sur les joueurs ou la liste des joueurs,
 notamment des "getter et setter"
+
+
+--- Exo7 :
+Faire des fonctions qui permettent de distribuer un certain nombre de cartes aux joueurs.
+Les deck de carte doit donc "perdre" ses premiers éléments, et ceux-ci doivent apparaitre
+dans les mains des joueurs.
