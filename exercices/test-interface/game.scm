@@ -81,10 +81,10 @@
 			(print-stats (cddr list)))))
 (define (pl-init-example)
 	(list
-		'( (2 41 33 22) "Dony" (4 30) 11)
+		'( (42 16 5 8 46 34 39) "Dony" (4 30) 11)
 		'( (31 7) "Delphy" (14 56) 14)
 		'( (48 19 38 26) "Dams" (34 27) 27)
-		'( (42 16 5 8 46 47 53) "Brybry" (45 27) 8)
+		'( (2 41 33 22 ) "Brybry" (45 27) 8)
 		'( (42 16 5 8 46 47) "Jess" (86 27) 16)
 		))
 
@@ -319,7 +319,7 @@
 
 (clear-id "warning")
 
-(document.write "<button onclick=\"updatePlayers()\">Update</button>")
+(document.write "<button class='ml-5' onclick=\"updatePlayers()\">Update</button>")
 (update-players)
 
 
