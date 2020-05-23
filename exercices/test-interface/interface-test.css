@@ -390,6 +390,33 @@ body {
 
 
 
+#players-form input {
+  /*display:block;*/
+}
+
+#players-form input[type="number"] {
+  width:55px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

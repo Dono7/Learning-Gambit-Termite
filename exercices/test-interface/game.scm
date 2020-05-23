@@ -84,7 +84,8 @@
 		'( (2 41 33 22) "Dony" (4 30) 11)
 		'( (31 7) "Delphy" (14 56) 14)
 		'( (48 19 38 26) "Dams" (34 27) 27)
-		'( (42 16 5 8 46 47) "Brybry" (34 27) 8)
+		'( (42 16 5 8 46 47 53) "Brybry" (45 27) 8)
+		'( (42 16 5 8 46 47) "Jess" (86 27) 16)
 		))
 
 (define (pl-add! name)
@@ -120,6 +121,23 @@
 		(if (not (null? p))
 			(set-car! (cdr p) newname))))
 
+(define (pl-index? name)
+	(pl-index-aux players name 1))
+(define (pl-index-aux pllist name i)
+	(if (not (null? pllist))
+		(begin
+			(if (string=? name (name? (car pllist)))
+				i
+				(pl-index-aux (cdr pllist) name (+ i 1))
+			))
+		-1))
+(define (pl-player-from-index i)
+	(if (not (eqv? i -1))
+		(pl-player-from-index-aux i players)))
+(define (pl-player-from-index-aux i pllist)
+	(if (eqv? i 1)
+		(car pllist)
+		(pl-player-from-index-aux (- i 1) (cdr pllist))))
 
 (define (pl-addScore! name int)
 	(let ((p (pl-player? name)))
@@ -133,6 +151,11 @@
 	(let ((p (pl-player? name)))
 		(if (not (null? p))
 			(set-car! (cddr p) scorepair))))
+
+(define (pl-numicon! name newnum)
+	(let ((p (pl-player? name)))
+		(if (not (null? p))
+			(set-car! (cdddr p) newnum))))
 (define (pl-print p)
 	(println (name? p) "\t" (score? p) ":" (total? p) "\t[ " (hand->string (hand? p)) "]"))
 (define (pl-print-all)
@@ -268,14 +291,37 @@
 			(game-deal-aux (cdr playerslist)))))
 
 
-(define (button-click-set! proc)
-  (##inline-host-statement "updatePlayers = g_scm2host(@1@);" proc))
+(define (id-to-value-int id)
+	(##inline-host-expression "g_host2scm(+document.getElementById(g_scm2host(@1@)).value)" id))
+(define (id-to-value-str id)
+	(##inline-host-expression "g_host2scm(document.getElementById(g_scm2host(@1@)).value)" id))
 
-(button-click-set! (update-players))
-(##inline-host-statement "var updatePlayers = g_scm2host(@1@);" (update-players))
+(define (update-from-player-form)
+	(let ( (numplayer (id-to-value-int "numjoueur")) (name (id-to-value-str "name1")) (score (id-to-value-int "score1")) (numicon (id-to-value-int "numicon1")) )
+		(begin 
+			(update-player-with-infos players numplayer name score numicon)
+			(update-players))))
 
 
-(document.write "<button onclick=\"updatePlayers\">Update</button>")
+(define (update-player-with-infos playerlist num name score icon)
+	(let ((p (pl-player-from-index num)))
+		(begin
+			(pl-changeName! (name? p) name)
+			(pl-score! (name? p) score)
+			(pl-numicon! (name? p) icon)
+			(update-players))))
+
+;(define (button-click-set! proc)
+;  (##inline-host-statement "updatePlayers = g_scm2host(@1@);" proc))
+
+;(button-click-set! update-players)
+(##inline-host-statement "updatePlayers = g_scm2host(@1@);" update-from-player-form )
+
+(clear-id "warning")
+
+(document.write "<button onclick=\"updatePlayers()\">Update</button>")
+(update-players)
+
 
 ;(##repl-debug-main)
 ;gsc -target js -exe -o game.js game.scm
