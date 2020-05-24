@@ -6,7 +6,7 @@
       (cons from (asc-list (+ from 1) to))))
 
 (define (make-deck) 
-  (asc-list 1 52))
+  (asc-list 1 54))
 
 
 
@@ -36,7 +36,7 @@
         (list-set! (cdr list) (- k 1) val)))
 (define (deck-set!-1 list k val)
 	(list-set! list (- k 1) val))
-(deck-set!-1 deck 5 10) 
+;(deck-set!-1 deck 5 10) 
 (define (switch-deck list index1 index2)
 	(if (< index1 index2)
 		(let (  (tmp (list-ref list (- index2 1)))
@@ -81,11 +81,11 @@
 			(print-stats (cddr list)))))
 (define (pl-init-example)
 	(list
-		'( (42 16 5 8 46 34 39) "Dony" (4 30) 11)
-		'( (31 7) "Delphy" (14 56) 14)
-		'( (48 19 38 26) "Dams" (34 27) 27)
-		'( (2 41 33 22 ) "Brybry" (45 27) 8)
-		'( (42 16 5 8 46 47) "Jess" (86 27) 16)
+		(list (list 42 16 5 8 46 34 39) "Dony" '(4 30) 11)
+		(list (list 31 7) "Delphy" '(14 56) 14)
+		(list (list 48 19 38 26) "Dams" '(34 27) 27)
+		(list (list 2 41 33 22 ) "Brybry" '(45 27) 8)
+		(list (list 42 16 5 8 46 47) "Jess" '(86 27) 16)
 		))
 
 (define (pl-add! name)
@@ -191,6 +191,8 @@
 (define (clear-id id)
 	(##inline-host-statement "document.getElementById(g_scm2host(@1@)).innerHTML = \"\";" id))
 
+(define (toggle-id id)
+	(##inline-host-statement "$('#'+g_scm2host(@1@)).toggle();" id))
 
 
 (define (n-showcard n)                         
@@ -275,7 +277,7 @@
 
 (set! players (pl-init-example))
 
-
+#|
 (define (game-deal nbcartes)
 	(cond (>= nbcartes 0)
 		(game-deal-one)))
@@ -290,7 +292,7 @@
 			(set! deck (cdr deck))
 			(game-deal-aux (cdr playerslist)))))
 
-
+|#
 (define (id-to-value-int id)
 	(##inline-host-expression "g_host2scm(+document.getElementById(g_scm2host(@1@)).value)" id))
 (define (id-to-value-str id)
@@ -314,14 +316,61 @@
 ;(define (button-click-set! proc)
 ;  (##inline-host-statement "updatePlayers = g_scm2host(@1@);" proc))
 
+(define (close-start)
+	(begin
+		(toggle-id "players-form-section")
+		(toggle-id "table")))
+
 ;(button-click-set! update-players)
+(##inline-host-statement "closeAndStart = g_scm2host(@1@);" close-start )
 (##inline-host-statement "updatePlayers = g_scm2host(@1@);" update-from-player-form )
+(##inline-host-statement "resetCardsAndUpdate = g_scm2host(@1@);" (lambda () (begin (reset-cards) (update-players))) )
+(##inline-host-statement "dealCards = g_scm2host(@1@);" (lambda () (begin (game-deal) (update-players))) )
 
 (clear-id "warning")
 
-(document.write "<button class='ml-5' onclick=\"updatePlayers()\">Update</button>")
+;(document.write "<button class='ml-5' onclick=\"updatePlayers()\">Update</button>")
+(document.write "<button class='ml-5' onclick=\"resetCardsAndUpdate()\">Reset Cards (et melange)</button>")
+(document.write "<button class='ml-5' onclick=\"dealCards()\">Distribuer</button>")
 (update-players)
 
 
-;(##repl-debug-main)
+(define (reset-cards) 
+	(begin
+		(set! deck (make-deck))
+		(shuffle deck)
+		(reset-hands players)))
+
+(define (reset-hands pllist)
+	(if (not (null? pllist))
+		(begin 
+			(set-car! (car pllist) (list))
+			(reset-hands (cdr pllist)))))
+
+; FAIRE FONCTION DE DEAL POUR DISTRIBUER LES CARTES
+(define (game-deal)
+	(begin
+		(deal-one)
+		(deal-one)
+		(deal-one)
+		(deal-one)
+		(deal-one)
+		(deal-one)
+		(deal-one)))
+
+(define (deal-one #!optional (pllist players))
+	(if (not (null? pllist))
+		(let ( (first (car deck)))
+			(begin
+				(set-car! (car pllist) (cons first (caar pllist)))
+				(remove-first-card)
+				(deal-one (cdr pllist))))))
+
+(define (remove-first-card)
+	(set! deck (cdr deck)))
+
+(define (show-deck)
+	(list (car deck) (cadr deck) (caddr deck) (cadddr deck) (cadr (cdddr deck)) (caddr (cdddr deck)) (cadddr (cdddr deck)) ))
+
+(##repl-debug-main)
 ;gsc -target js -exe -o game.js game.scm

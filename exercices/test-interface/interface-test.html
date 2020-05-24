@@ -122,8 +122,12 @@
 
 
 
-    <section class="mt-2 ml-5">
+    <section id="players-form-section" class="mt-2 ml-5">
       <form id="players-form" class="mt-5 mb-2 p-3">
+        <div class="float-right">
+          <button type="button" class='m-1 float-right' onclick="closeAndStart()">Close and Start the game</button><br/>
+          <button type="button" class='m-1 float-right' onclick="updatePlayers()">Update le joueur</button>
+        </div>
         <h3>Changer les infos sur un joueur en direct :</h3>
         <div class="joueur-form">
           <label>Numéro de joueur (1 = me, 2 à 5 = adversaire)</label>
@@ -134,16 +138,21 @@
           <input type="number" name="score1" min="0" max="120" value="0" id="score1"/><br/>
           <label>Numéro d'icon</label>
           <input type="number" name="numicon1" min="1" max="27" value="1" id="numicon1"/><br/>
-
         </div>
       </form>
     </section>
 
+
+    <div class="container mt-5 my-3" >
+      <div class="row justify-content-around">
+        <section id="table" class="col-10" style="display:none">
+          
+        </section>
+      </div>
+    </div>
+
+
     <h1 id="warning">Chargement de Scheme en cours... (cela devrait prendre quelques secondes)</h1>
-
-
-
-
 
 
 

@@ -401,7 +401,13 @@ body {
 }
 
 
-
+#table {
+  height:250px;
+  width:80%;
+  background-color: #EEE;
+  border: 2px grey solid;
+  border-radius: 5px;
+}
 
 
 
