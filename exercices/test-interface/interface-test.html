@@ -133,7 +133,7 @@
           <label>Numéro de joueur (1 = me, 2 à 5 = adversaire)</label>
           <input type="number" name="numjoueur" min="1" max="5" value="2" id="numjoueur"/><br/>
           <label>Pseudo</label>
-          <input placeholder="pseudo" type="text" name="name1" value="Hey" id="name1"/><br/>
+          <input placeholder="pseudo" type="text" name="name1" value="Jonny" id="name1"/><br/>
           <label>Score</label>
           <input type="number" name="score1" min="0" max="120" value="0" id="score1"/><br/>
           <label>Numéro d'icon</label>
@@ -146,7 +146,21 @@
     <div class="container mt-5 my-3" >
       <div class="row justify-content-around">
         <section id="table" class="col-10" style="display:none">
-          
+          <div id="pioche" class="carte-deck">
+            <div class="ca ca-simp ca55"></div>
+            <div class="ca ca-simp ca55"></div>
+            <div class="ca ca-simp ca55"></div>
+            <div class="ca ca-simp ca55"></div>
+          </div>
+          <div id="discard" class="carte-deck">
+            <div class="ca ca-simp ca53"></div>
+            <div class="ca ca-simp ca49"></div>
+            <div class="ca ca-simp ca29"></div>
+            <div class="ca ca-simp ca8"></div>
+            <div class="ca ca-simp ca25"></div>
+            <div class="ca ca-simp ca30"></div>
+            <div class="ca ca-simp ca39"></div>
+          </div>
         </section>
       </div>
     </div>
@@ -174,12 +188,20 @@
         <div class="ca ca-simp ca30"></div>
         <div class="ca ca-simp ca39"></div>
       </div>
-      <div id="myoptions"></div>
+      <div id="myoptions">
+        <label>Carte à poser</label>
+        <input type="number" min="1" max=7 id="putthis" value="1"/> <br/>
+        <button onclick="poserAnimationScm();setTimeout(poser,900)">Poser et piocher</button><br/>
+        <button onclick="poserAnimationScm();setTimeout(recuperer,900)">Poser et récupérer la dernière carte</button><br/>
+        <button onclick="simulTour()">Simuler un tour de jeu</button><br/>
+        <button onclick="melangerDecks()">Mélanger le deck et les cartes posées</button>
+      </div>
     </section>
 
 
   	
     <script type="text/javascript" src="game.js"></script>
+    <script type="text/javascript" src="animations.js"></script>
   </body>
 
 </html>

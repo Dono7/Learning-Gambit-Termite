@@ -242,11 +242,33 @@
 			(display-myhand (cdr h)))))
 
 
+(define (print-deck-n-cards n)
+	(##inline-host-statement "for(var i=0; i < g_scm2host(@1@) ; i++){ document.getElementById(\"pioche\").innerHTML += '<div class=\"ca ca-simp ca55\"></div>' ;} " n))
+
+(define (print-discard #!optional (dis (reverse discard)))
+	(if (not (null? dis))
+		(begin
+			(##inline-host-statement "$('#discard').append('<div class=\"ca ca-simp '+g_scm2host(@1@)+'\"></div>')" (string-append "ca" (number->string (car dis))))
+			(print-discard (cdr dis)) )))
+
+(define (update-table)
+	(begin
+		(clear-id "pioche")
+		(print-deck-n-cards (length deck))
+		(clear-id "discard")
+		(print-discard)))
+
 (define (update-players)
 	(begin
 		(clear-id "players-container")
 		(pl-display-me (car players))
-		(pl-display-aux (cdr players))))
+		(pl-display-aux (cdr players))
+		(update-table)
+		;(display-table-deck-onecard)
+		;(clear-id "pioche")
+		;(display-table-deck)
+		;(print-deck-n-cards (length deck))
+		))
 
 
 (define (pl-display-aux pllist)
@@ -330,13 +352,14 @@
 (clear-id "warning")
 
 ;(document.write "<button class='ml-5' onclick=\"updatePlayers()\">Update</button>")
-(document.write "<button class='ml-5' onclick=\"resetCardsAndUpdate()\">Reset Cards (et melange)</button>")
+(document.write "<button class='ml-5' onclick=\"resetCardsAndUpdate()\">Reset Cards (et melanger)</button>")
 (document.write "<button class='ml-5' onclick=\"dealCards()\">Distribuer</button>")
 (update-players)
 
 
 (define (reset-cards) 
 	(begin
+		(set! discard (list))
 		(set! deck (make-deck))
 		(shuffle deck)
 		(reset-hands players)))
@@ -372,5 +395,136 @@
 (define (show-deck)
 	(list (car deck) (cadr deck) (caddr deck) (cadddr deck) (cadr (cdddr deck)) (caddr (cdddr deck)) (cadddr (cdddr deck)) ))
 
+
+
+
+
+
+
+
+
+#| "Operator is not a PROCEDURE (#!void)" dès qu'on appelle l'affichage du deck, pour une raison inconnue... ???
+
+(define (display-table-deck #!optional (n (length deck)) )
+	(if (> n 0)
+		(begin
+			(display-table-deck-onecard)
+			(display-table-deck (- n 1)))))
+
+(define (display-table-deck-onecard)
+	;(begin
+		;(##inline-host-statement "$('#pioche').append('<div class=\"ca ca-simp ca55\"></div>');")
+		;(##inline-host-statement "$('#pioche')[0].innerHTML += '<div class=\"ca ca-simp ca55\"></div>';" )
+		;(##inline-host-statement "$('#pioche').html(g_scm2host(@1@));" "<div class=\"ca ca-simp ca55\"></div>")))
+	(##inline-host-statement "document.getElementById(g_scm2host(@1@)).innerHTML = \"\";" "mycards"))
+
+(define (display-onecard)
+	(##inline-host-statement "$('#pioche')[0].innerHTML += '<div class=\"ca ca-simp ca55\"></div>';"))
+
+(define (update-table)
+	(begin
+		(clear-id "pioche")
+		(display-table-deck)))
+
+|#
+
+
+(define (move-to-discard c)
+	(set! discard (cons (list-ref (hand? (car players)) c) discard)))
+
+(define (rmv-from-list! l i)
+	(set! l (rmv-from-list l i)))
+
+(define (rmv-from-list l i)
+	(if (not (null? l))
+		(if (eqv? i 1)
+			(cdr l)
+			(cons (car l) (rmv-from-list (cdr l) (- i 1))))))
+
+(define (poser)
+	(let ((c ( - (id-to-value-int "putthis") 1)))
+		(begin
+			(move-to-discard c)
+			(set-car! (car players) (rmv-from-list (caar players) (+ c 1)))
+			(update-players))))
+
+(define (piocher)
+	(begin
+		(set-car! (car players) (reverse (cons (car deck) (reverse (caar players)))))
+		(set! deck (cdr deck))))
+
+(define (recuperer)
+	(begin
+		(if (> (length discard) 0)
+			(set-car! (car players) (reverse (cons (car discard) (reverse (caar players)))))
+			(set! deck (cdr deck)))))
+
+(define (animation-poser)
+	(let ((num (id-to-value-int "putthis")))
+		(##inline-host-statement "poserAnimation(g_scm2host(@1@));" num)))
+
+
+(define (poser-et-piocher)
+	(begin
+		(poser)
+		(piocher)
+		(update-players)))
+
+(define (poser-et-recup)
+	(begin
+		(recuperer)
+		(poser)
+		(update-players)))
+
+
+
+(define (simul-someone-play name)
+	(if (not (null? deck))
+		(let ((p (pl-player? name)))
+			(begin
+				(set! discard (cons (car (hand? p)) discard))
+				(set-car! p (cons (car deck) (cdar p)))
+				(remove-first-card)))))
+
+(define (simul-everyenemy-play #!optional (pllist (cdr players)))
+	(if (not (null? pllist))
+		(begin
+			(simul-someone-play (name? (car pllist)))
+			(simul-everyenemy-play (cdr pllist)))
+		(update-players)))
+
+
+; Fonction pas utile au final, car intégré dans simul-some-play
+(define (pl-add-carte name valcarte #!optional (pllist players))
+	(if (not (null? pllist))
+		(let ((p (car pllist)))
+			(if (string=? (name? p) name)
+				(set-car! p (cons valcarte (hand? p)))
+				(pl-add-carte name valcarte (cdr pllist))))))
+
+(define (melanger-les-deck)
+	(begin
+		(set! deck (append deck discard))
+		(set! discard (list))
+		(shuffle deck)
+		(update-players)))
+
+
+(##inline-host-statement "poserAnimationScm = g_scm2host(@1@);" animation-poser )
+(##inline-host-statement "poser = g_scm2host(@1@);" poser-et-piocher )
+(##inline-host-statement "recuperer = g_scm2host(@1@);" poser-et-recup )
+(##inline-host-statement "simulTour = g_scm2host(@1@);" simul-everyenemy-play )
+(##inline-host-statement "melangerDecks = g_scm2host(@1@);" melanger-les-deck )
+
+
+
+(define (set-game-ready)
+	(begin
+		(close-start)
+		(reset-cards)
+		(game-deal)
+		(update-players)))
+
+;(set-game-ready)
 (##repl-debug-main)
 ;gsc -target js -exe -o game.js game.scm
