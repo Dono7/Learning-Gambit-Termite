@@ -1,0 +1,207 @@
+<!doctype html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Interface test</title>
+
+<link rel="stylesheet" href="interface-test.css">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+
+
+
+    <section id="players-container">
+
+      <div class="card-container card-shadow">
+        <div class="eventails">
+          <div class="showcard"></div>
+          <div class="showcard"></div>
+        </div>
+        <div class="shapes">
+          <div class="circle1"></div>
+          <div class="circle2"></div>
+          <div class="square1"></div>
+          <div class="square2"></div>
+        </div>
+        <div class="player-card">
+          <div class="icon bee"></div>
+          <p class="player-infos">
+            <span class="name">Joueur 2</span>
+          </p>
+        </div>
+        <p class="score-bar">
+          <span class="score">12</span>
+        </p>
+      </div>
+
+      <div class="card-container card-shadow">
+        <div class="eventails">
+          <div class="showcard"></div>
+          <div class="showcard"></div>
+          <div class="showcard"></div>
+          <div class="showcard"></div>
+        </div>
+        <div class="shapes">
+          <div class="circle1"></div>
+          <div class="circle2"></div>
+          <div class="square1"></div>
+          <div class="square2"></div>
+        </div>
+        <div class="player-card">
+          <div class="icon giraffe"></div>
+          <p class="player-infos">
+            <span class="name">Joueur 3</span>
+          </p>
+        </div>
+        <p class="score-bar">
+          <span class="score">83</span>
+        </p>
+      </div>
+
+      <div class="card-container card-shadow">
+        <div class="eventails">
+          <div class="showcard"></div>
+          <div class="showcard"></div>
+          <div class="showcard"></div>
+          <div class="showcard"></div>
+          <div class="showcard"></div>
+          <div class="showcard"></div>
+          <div class="showcard"></div>
+        </div>
+        <div class="shapes">
+          <div class="circle1"></div>
+          <div class="circle2"></div>
+          <div class="square1"></div>
+          <div class="square2"></div>
+        </div>
+        <div class="player-card">
+          <div class="icon elephant"></div>
+          <p class="player-infos">
+            <span class="name">Joueur 4</span>
+          </p>
+        </div>
+        <p class="score-bar">
+          <span class="score">96</span>
+        </p>
+      </div>
+
+      <div class="card-container card-shadow">
+        <div class="eventails">
+          <div class="showcard"></div>
+          <div class="showcard"></div>
+          <div class="showcard"></div>
+        </div>
+        <div class="shapes">
+          <div class="circle1"></div>
+          <div class="circle2"></div>
+          <div class="square1"></div>
+          <div class="square2"></div>
+        </div>
+        <div class="player-card">
+          <div class="icon whale"></div>
+          <p class="player-infos">
+            <span class="name">Joueur 5</span>
+          </p>
+        </div>
+        <p class="score-bar">
+          <span class="score">35</span>
+        </p>
+      </div>
+
+
+    </section>
+
+
+
+
+    <section id="players-form-section" class="mt-2 ml-5">
+      <form id="players-form" class="mt-5 mb-2 p-3">
+        <div class="float-right">
+          <button type="button" class='m-1 float-right' onclick="closeAndStart()">Close and Start the game</button><br/>
+          <button type="button" class='m-1 float-right' onclick="updatePlayers()">Update le joueur</button>
+        </div>
+        <h3>Changer les infos sur un joueur en direct :</h3>
+        <div class="joueur-form">
+          <label>Numéro de joueur (1 = me, 2 à 5 = adversaire)</label>
+          <input type="number" name="numjoueur" min="1" max="5" value="2" id="numjoueur"/><br/>
+          <label>Pseudo</label>
+          <input placeholder="pseudo" type="text" name="name1" value="Jonny" id="name1"/><br/>
+          <label>Score</label>
+          <input type="number" name="score1" min="0" max="120" value="0" id="score1"/><br/>
+          <label>Numéro d'icon</label>
+          <input type="number" name="numicon1" min="1" max="27" value="1" id="numicon1"/><br/>
+        </div>
+      </form>
+    </section>
+
+
+    <div class="container mt-5 my-3" >
+      <div class="row justify-content-around">
+        <section id="table" class="col-10" style="display:none">
+          <div id="pioche" class="carte-deck">
+            <div class="ca ca-simp ca55"></div>
+            <div class="ca ca-simp ca55"></div>
+            <div class="ca ca-simp ca55"></div>
+            <div class="ca ca-simp ca55"></div>
+          </div>
+          <div id="discard" class="carte-deck">
+            <div class="ca ca-simp ca53"></div>
+            <div class="ca ca-simp ca49"></div>
+            <div class="ca ca-simp ca29"></div>
+            <div class="ca ca-simp ca8"></div>
+            <div class="ca ca-simp ca25"></div>
+            <div class="ca ca-simp ca30"></div>
+            <div class="ca ca-simp ca39"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+
+    <h1 id="warning">Chargement de Scheme en cours... (cela devrait prendre quelques secondes)</h1>
+
+
+
+
+
+
+    <section id="me">
+      <div id="myinfos">
+        <div id="myicon" class="elephant"></div>
+        <p id="myname">Joueur 1 (me)</p>
+        <p id="myscore"><span>15</span></p>
+      </div>
+      <div id="mycards">
+        <div class="ca ca-simp ca53"></div>
+        <div class="ca ca-simp ca49"></div>
+        <div class="ca ca-simp ca29"></div>
+        <div class="ca ca-simp ca8"></div>
+        <div class="ca ca-simp ca25"></div>
+        <div class="ca ca-simp ca30"></div>
+        <div class="ca ca-simp ca39"></div>
+      </div>
+      <div id="myoptions">
+        <label>Carte à poser</label>
+        <input type="number" min="1" max=7 id="putthis" value="1"/> <br/>
+        <button onclick="poserAnimationScm();setTimeout(poser,900)">Poser et piocher</button><br/>
+        <button onclick="poserAnimationScm();setTimeout(recuperer,900)">Poser et récupérer la dernière carte</button><br/>
+        <button onclick="simulTour()">Simuler un tour de jeu</button><br/>
+        <button onclick="melangerDecks()">Mélanger le deck et les cartes posées</button>
+      </div>
+    </section>
+
+
+  	
+    <script type="text/javascript" src="game-ready.js"></script>
+    <script type="text/javascript" src="animations.js"></script>
+  </body>
+
+</html>
